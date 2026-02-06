@@ -36,6 +36,15 @@
 *.exe
 *.out
 *.app
+*.3dsx
+*.cia
+*.elf
+*.smdh
 
 # debug information files
 *.dwo
+
+# build and output and vscode folders
+build/
+out/
+.vscode/
