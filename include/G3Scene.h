@@ -1,17 +1,13 @@
 #pragma once
-#include <memory>
+#include <G3Node.h>
 #include <citro2d.h>
 
-class G3Scene
-{
-private:
-    int init();
-    u32 m_temp_color{};
-    G3Scene(u32 temp_color): m_temp_color{temp_color}{};
-public:
-    static G3Scene *create(u32 c);
-
-    void update();
-    void drawTop();
-    void drawBottom();
+// G3Node with the ability to choose which screen to draw on basically
+class G3Scene: public G3Node{
+    public:
+    static std::shared_ptr<G3Scene> create();
+    void draw() override; // will just draw top, please use drawTop() instead!
+    // void update() override;
+    virtual void drawTop();
+    virtual void drawBottom();
 };

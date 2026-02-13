@@ -1,29 +1,29 @@
-#include <G3Scene.h>
-#include <citro2d.h>
+#include "G3Scene.h"
 
-G3Scene *G3Scene::create(u32 c)
+std::shared_ptr<G3Scene> G3Scene::create()
 {
-    G3Scene *ret = new G3Scene(c);
-    if (!ret && !ret->init())
-    {
-        delete ret;
-        ret = nullptr;
-    }
-
-    return ret;
+    return std::make_shared<G3Scene>();
 }
 
-int G3Scene::init()
+void G3Scene::draw()
 {
-
-    return 0;
+    drawTop();
 }
-
-void G3Scene::update() {};
 
 void G3Scene::drawTop()
 {
-    C2D_DrawCircleSolid(200.0f, 120.0f, 0, 50.0f, m_temp_color);
+    for (auto child : m_children)
+    {
+        if (child->getDrawOn() == G3Node::Screen::top)
+            child->draw();
+    }
 }
 
-void G3Scene::drawBottom() {}
+void G3Scene::drawBottom()
+{
+    for (auto child : m_children)
+    {
+        if (child->getDrawOn() == G3Node::Screen::bottom)
+            child->draw();
+    }
+}
