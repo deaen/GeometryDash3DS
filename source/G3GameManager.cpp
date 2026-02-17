@@ -1,7 +1,4 @@
-#include <G3GameManager.h>
-
-/*Scenes*/
-#include <G3LevelScene.h>
+#include "G3GameManager.h"
 
 G3GameManager::G3GameManager()
 {

@@ -6,3 +6,4 @@ wip credits
 - devkitpro & citro2d
 - all the music artists
 - gd colon logo creator and sprite splitter
+- zlib library
