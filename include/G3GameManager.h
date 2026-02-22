@@ -23,10 +23,6 @@ public:
     void drawSceneAtBottom();
 
     void setcurrentScene(std::shared_ptr<G3Scene> scene);
-
-    /* Texture Stuff */
-    C2D_SpriteSheet m_objectSheet{};
-    
 private:
     G3GameManager();
     std::shared_ptr<G3Scene> m_currentScene{};

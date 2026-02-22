@@ -16,44 +16,56 @@ public:
     virtual void update();
     virtual void draw();
 
-    void setTag(std::string_view tag);     // Set tag to be able to identify this node u really wanna do this!!
+    void setTag(std::string_view tag);       // Set tag to be able to identify this node u really wanna do this!!
     void setDrawOn(G3Consts::Screen screen); // Set which screen to draw on. this is only considered when node is directly under the root scene, otherwise it will just follow the parent's screen. defaults to TOP
 
     std::string_view getTag();
     G3Consts::Screen getDrawOn();
 
-    void addChild(std::shared_ptr<G3Node> ptr);
+    virtual void addChild(const std::shared_ptr<G3Node>& child) final;
     void clearChildren();
+
+    virtual G3Node* getParent() final;
+    virtual float getPosX() final;
+    virtual float getPosY() final;
+    virtual float getTranslationVelocityX() final;
+    virtual float getTranslationVelocityY() final;
+    virtual int getZOrder() final;
+    virtual float getWidth() final;
+    virtual float getHeight() final;
 
     virtual void setPosX(float posX);
     virtual void setPosY(float posY);
-    void setPosZ(float posZ);
 
-    void setScaleX(float scaleX);
-    void setScaleY(float scaleY);
+    // void setScaleX(float scaleX);
+    // void setScaleY(float scaleY);
 
-    void setRotDegree(float rotDegree);
+    // void setRotDegree(float rotDegree);
 
-    void setWidth(float width);
-    void setHeight(float height);
+    // void setWidth(float width);
+    // void setHeight(float height);
 
 protected:
     std::vector<std::shared_ptr<G3Node>> m_children{};
-    std::shared_ptr<G3Node> m_parent{};
+    G3Node* m_parent{nullptr};
 
     /* Positing stuff */
     float m_posX{};
     float m_posY{};
-    float m_posZ{};
 
-    float m_scaleX{};
-    float m_scaleY{};
+    float m_scaleX{1.0f};
+    float m_scaleY{1.0f};
 
     float m_rotDegree{};
 
     float m_width{};
     float m_height{};
 
+    float m_translationVelocityX{};
+    float m_translationVelocityY{};
+
+    int m_zOrder{};
     std::string_view m_tag{};
+
     G3Consts::Screen m_drawOn{G3Consts::Screen::top};
 };

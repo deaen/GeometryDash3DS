@@ -1,22 +1,24 @@
 #pragma once
+#include <typeinfo>
 #include "G3Node.h"
 #include "G3LevelObject.h"
 #include "G3Globals.h"
 
-// a node that ONLY contains levelobject(s), and acts as a camera, children of THIS cool little node only render when they're on screen!!!!!!
+// a node that ONLY contains levelobject(s) (or anything honestly), and acts as a camera, children of THIS cool little node only render when they're on screen!!!!!!
 class G3LevelObjectContainer : public G3Node
 {
 public:
     G3LevelObjectContainer();
+    void sortChildren();
     /* X position getters*/
 
     float topLeftPosX();
     float bottomLeftPosX();
-    
-    float topRightPosX(G3Consts::Screen screen);
-    float bottomRightPosX(G3Consts::Screen screen);
 
-    float centerPosX(G3Consts::Screen screen);
+    float topRightPosX();
+    float bottomRightPosX();
+
+    float centerPosX();
 
     /* Y position getters */
 
@@ -28,17 +30,45 @@ public:
 
     float centerPosY();
 
-    /* Position setters */
-
-    void setPos(float posX, float posY);
-    void setPosX(float posX) override;
-    void setPosY(float posY) override;
-    
-    void translatePos(float posX, float posY);
-    void translatePosX(float posX);
-    void translatePosY(float posY);
+    void update() override;
+    bool overlaps(G3Node *child);
+    void draw() override; // draw bottom layers
+    void drawTopLayers();
 
 private:
-    std::vector<std::shared_ptr<G3LevelObject>> m_children{};
-    
+    std::vector<std::shared_ptr<G3LevelObject>> m_b5{};
+    std::vector<std::shared_ptr<G3LevelObject>> m_b4{};
+    std::vector<std::shared_ptr<G3LevelObject>> m_b3{};
+    std::vector<std::shared_ptr<G3LevelObject>> m_b2{};
+    std::vector<std::shared_ptr<G3LevelObject>> m_b1{};
+    std::vector<std::shared_ptr<G3Node>> m_playerLayer{};
+    std::vector<std::shared_ptr<G3LevelObject>> m_t1{};
+    std::vector<std::shared_ptr<G3LevelObject>> m_t2{};
+    std::vector<std::shared_ptr<G3LevelObject>> m_t3{};
+    std::vector<std::shared_ptr<G3LevelObject>> m_t4{};
+    template <typename T>
+    void drawLayer(const std::vector<T> &layer);
+
+    template <typename T>
+    void sortLayer(std::vector<std::shared_ptr<T>> &layer);
 };
+
+template <typename T>
+inline void G3LevelObjectContainer::drawLayer(const std::vector<T> &layer)
+{
+    for (const auto &child : layer)
+    {
+        if (overlaps(child.get()))
+            child->draw();
+    }
+}
+
+template <typename T>
+inline void G3LevelObjectContainer::sortLayer(std::vector<std::shared_ptr<T>> &layer)
+{
+    std::sort(layer.begin(), layer.end(),
+              [](const auto &a, const auto &b)
+              {
+                  return a->getZOrder() < b->getZOrder();
+              });
+}

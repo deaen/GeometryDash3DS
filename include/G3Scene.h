@@ -10,9 +10,8 @@ public:
     static std::shared_ptr<G3Scene> create();
 
     void draw() override; // will just draw top, please use drawTop() instead!
-    void update() override;
     virtual void drawTop();
     virtual void drawBottom();
 
-    void drawText(std::string_view str); // make sure to always call G3Scene::update() first bro;
+    // void drawText(std::string_view str); // make sure to always call G3Scene::update() first bro;
 };

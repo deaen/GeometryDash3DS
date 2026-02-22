@@ -2,8 +2,14 @@
 
 G3LevelScene::G3LevelScene()
 {
-    this->addChild(G3LevelObject::create());
-    //loadLevel(1);
+    m_objectContainer = std::make_shared<G3LevelObjectContainer>();
+    this->addChild(m_objectContainer);
+
+    // auto gameObj = G3LevelObject::create();
+    // gameObj->setupObject("");
+    // m_objectContainer->addChild(gameObj);
+
+    loadLevel(14);
 }
 
 std::shared_ptr<G3LevelScene> G3LevelScene::create()
@@ -30,17 +36,31 @@ int G3LevelScene::loadLevel(int id)
             continue;
         if (objectCount == 0)
         {
-            // start obect shit here
+            // start object shit here
             ++objectCount;
             continue;
         }
 
         auto gameObj = G3LevelObject::create();
         gameObj->setupObject(str);
-        this->addChild(gameObj);
+        m_objectContainer->addChild(gameObj);
 
         ++objectCount;
     }
 
+
+    m_objectContainer->sortChildren();
     return 0;
+}
+
+void G3LevelScene::drawTop()
+{
+    m_objectContainer->draw();
+    // player or sum here
+    m_objectContainer->drawTopLayers();
+}
+
+void G3LevelScene::drawBottom()
+{
+    // MANUALLY DRAW BOTTOM UI HERE LATER
 }

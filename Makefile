@@ -245,7 +245,7 @@ $(GFXBUILD)/%.t3x	$(BUILD)/%.h	:	%.t3s
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 # 	-p to get a preview of the texture in the output folder!
-	@tex3ds -i $< -H $(BUILD)/$*.h -d $(DEPSDIR)/$*.d -o $(GFXBUILD)/$*.t3x -p $(OUTDIR)/$*.png
+	@tex3ds -i $< -H $(BUILD)/$*.h -d $(DEPSDIR)/$*.d -o $(GFXBUILD)/$*.t3x -p $(OUTDIR)/$*.png --border transparent
 
 
 #---------------------------------------------------------------------------------

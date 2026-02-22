@@ -12,14 +12,9 @@ void G3Scene::draw()
     drawTop();
 }
 
-void G3Scene::update()
-{
-    G3Node::update();
-}
-
 void G3Scene::drawTop()
 {
-    for (auto child : m_children)
+    for (const auto& child : m_children)
     {
         if (child->getDrawOn() == G3Consts::Screen::top)
             child->draw();
@@ -28,7 +23,7 @@ void G3Scene::drawTop()
 
 void G3Scene::drawBottom()
 {
-    for (auto child : m_children)
+    for (const auto& child : m_children)
     {
         if (child->getDrawOn() == G3Consts::Screen::bottom)
             child->draw();

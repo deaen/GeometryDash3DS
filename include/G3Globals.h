@@ -1,4 +1,5 @@
 #pragma once
+#include <citro2d.h>
 
 namespace G3Consts
 {
@@ -11,4 +12,8 @@ namespace G3Consts
         top,
         bottom
     };
+}
+
+namespace G3Sheets{
+    inline C2D_SpriteSheet objects;
 }
