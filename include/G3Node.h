@@ -26,32 +26,43 @@ public:
     void clearChildren();
 
     virtual G3Node* getParent() final;
+
     virtual float getPosX() final;
     virtual float getPosY() final;
-    virtual float getTranslationVelocityX() final;
-    virtual float getTranslationVelocityY() final;
+
     virtual int getZOrder() final;
+
     virtual float getWidth() final;
     virtual float getHeight() final;
+
+    virtual float getRotDegree() final;
+
+    virtual float getScaleX() final;
+    virtual float getScaleY() final;
+
+    void setParent(G3Node *parent);
 
     virtual void setPosX(float posX);
     virtual void setPosY(float posY);
 
-    // void setScaleX(float scaleX);
-    // void setScaleY(float scaleY);
+    virtual void setScaleX(float scaleX);
+    virtual void setScaleY(float scaleY);
 
-    // void setRotDegree(float rotDegree);
+    void setRotDegree(float rotDegree);
 
-    // void setWidth(float width);
-    // void setHeight(float height);
+    void setWidth(float width);
+    void setHeight(float height);
+
+    void flipH();
+    void flipV();
 
 protected:
     std::vector<std::shared_ptr<G3Node>> m_children{};
     G3Node* m_parent{nullptr};
 
     /* Positing stuff */
-    float m_posX{};
-    float m_posY{};
+    float m_posX{}; // its offset of its parentntnt n stuff. i always forget this
+    float m_posY{}; // its offset of its parentntnt n stuff. i always forget this
 
     float m_scaleX{1.0f};
     float m_scaleY{1.0f};
@@ -60,10 +71,7 @@ protected:
 
     float m_width{};
     float m_height{};
-
-    float m_translationVelocityX{};
-    float m_translationVelocityY{};
-
+    
     int m_zOrder{};
     std::string_view m_tag{};
 

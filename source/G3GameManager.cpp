@@ -2,12 +2,16 @@
 
 G3GameManager::G3GameManager()
 {
+    C2D_SetTintMode(C2D_TintMode::C2D_TintMult);
     /* Load textures */
-    G3Sheets::objects = C2D_SpriteSheetLoad("romfs:/gfx/objects.t3x");
-    //...
+    
+    G3Sheets::objects = C2D_SpriteSheetLoad("romfs:/gfx/objects.t3x"); 
     if (!G3Sheets::objects) svcBreak(USERBREAK_PANIC);
-
-    // Set first scene
+    C3D_TexSetFilter(C2D_SpriteSheetGetImage(G3Sheets::objects, 0).tex, GPU_TEXTURE_FILTER_PARAM::GPU_LINEAR, GPU_TEXTURE_FILTER_PARAM::GPU_LINEAR);
+    
+    // /* Load textures */
+    
+    // // Set first scene
     G3GameManager::setcurrentScene(G3LevelScene::create());
 }
 

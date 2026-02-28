@@ -1,5 +1,11 @@
 #include "G3LevelObject.h"
 
+G3LevelObject::G3LevelObject()
+{
+    m_scaleX = G3Camera::cameraScale;
+    m_scaleY = G3Camera::cameraScale;
+}
+
 std::shared_ptr<G3LevelObject> G3LevelObject::create()
 {
     return std::make_shared<G3LevelObject>();
@@ -27,25 +33,33 @@ void G3LevelObject::setupObject(std::string_view objectString)
             m_objectID = std::atoi(str.data());
             break;
         case 2:
-            m_posX = (std::atof(str.data()));
+            float posX;
+            posX = std::atof(str.data());
+            setWorldPosX(posX);
+            setPosX(posX * m_scaleX);
             break;
         case 3:
-            m_posY = (-(std::atof(str.data()))) + G3Consts::screenHeight;
+            float posY;
+            posY = -std::atof(str.data());
+            setWorldPosY(posY);
+            setPosY(posY * m_scaleY);
             break;
         case 4:
-            m_flipH = std::atoi(str.data());
+            if (std::atoi(str.data()))
+                flipH();
             break;
         case 5:
-            m_flipV = std::atoi(str.data());
+            if (std::atoi(str.data()))
+                flipV();
             break;
         case 6:
-            m_rotDegree = std::atof(str.data());
+            setRotDegree(std::atof(str.data()));
             break;
         }
         ++propCount;
     }
 
-    int spriteID{getSpriteID(m_objectID)};
+    int spriteID{getSprites(m_objectID)};
 
     if (spriteID == -1)
     {
@@ -57,7 +71,7 @@ void G3LevelObject::setupObject(std::string_view objectString)
     };
 }
 
-int G3LevelObject::getSpriteID(int objectID)
+int G3LevelObject::getSprites(int objectID)
 {
     int sprID{-1};
 
@@ -902,6 +916,22 @@ int G3LevelObject::getSpriteID(int objectID)
     return sprID;
 }
 
+void G3LevelObject::update()
+{
+    G3Sprite::update();
+
+    if (G3Camera::cameraVelocityX)
+    {
+        m_posX += G3Camera::cameraVelocityX;
+        C2D_SpriteMove(&m_spr, G3Camera::cameraVelocityX, 0);
+    }
+    if (G3Camera::cameraVelocityY)
+    {
+        m_posY += G3Camera::cameraVelocityY;
+        C2D_SpriteMove(&m_spr, 0, G3Camera::cameraVelocityY);
+    }
+}
+
 void G3LevelObject::draw()
 {
     if (m_shouldDraw)
@@ -911,4 +941,24 @@ void G3LevelObject::draw()
 int G3LevelObject::getZLayer()
 {
     return m_zLayer;
+}
+
+void G3LevelObject::setWorldPosX(float worldPosX)
+{
+    m_worldPosX = worldPosX;
+}
+
+void G3LevelObject::setWorldPosY(float worldPosY)
+{
+    m_worldPosY = worldPosY;
+}
+
+void G3LevelObject::setWorldScaleX(float worldScaleX)
+{
+    m_worldScaleX = worldScaleX;
+}
+
+void G3LevelObject::setWorldScaleY(float worldScaleY)
+{
+    m_worldScaleY = worldScaleY;
 }

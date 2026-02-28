@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <fstream>
 #include <ranges>
+#include <map>
 #include "G3Scene.h"
 #include "G3LevelObject.h"
 #include "G3LevelObjectContainer.h"
@@ -17,5 +18,9 @@ public:
     void drawBottom() override;
 
 private:
-    std::shared_ptr<G3LevelObjectContainer> m_objectContainer{};
+    void setupStartObject(std::string_view startObjectString);
+    std::map<char, float> getColor(std::string_view colorString);
+
+    std::shared_ptr<G3LevelObjectContainer> m_objectContainer{G3LevelObjectContainer::create()};
+    std::shared_ptr<G3Sprite> m_background{G3Sprite::create()}; // temp bg
 };

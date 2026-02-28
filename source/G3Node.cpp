@@ -12,9 +12,6 @@ G3Node::~G3Node()
 
 void G3Node::update()
 {
-    if(m_translationVelocityX) m_posX += m_translationVelocityX + getParent()->m_translationVelocityX;
-    if(m_translationVelocityY) m_posY += m_translationVelocityY + getParent()->m_translationVelocityY;
-    
     // update all the children
     for (const auto &child : m_children)
     {
@@ -53,7 +50,7 @@ G3Consts::Screen G3Node::getDrawOn()
 
 void G3Node::addChild(const std::shared_ptr<G3Node> &child)
 {
-    child->m_parent = this;
+    child->setParent(this);
     m_children.push_back(child);
 }
 
@@ -77,16 +74,6 @@ float G3Node::getPosY()
     return m_posY;
 }
 
-float G3Node::getTranslationVelocityX()
-{
-    return m_translationVelocityX;
-}
-
-float G3Node::getTranslationVelocityY()
-{
-    return m_translationVelocityY;
-}
-
 int G3Node::getZOrder()
 {
     return m_zOrder;
@@ -102,62 +89,98 @@ float G3Node::getHeight()
     return m_height;
 }
 
+float G3Node::getRotDegree()
+{
+    return m_rotDegree;
+}
+
+float G3Node::getScaleX()
+{
+    return m_scaleX;
+}
+
+float G3Node::getScaleY()
+{
+    return m_scaleY;
+}
+
+void G3Node::setParent(G3Node *parent)
+{
+    m_parent = parent;
+}
 void G3Node::setPosX(float posX)
 {
-    this->m_posX = posX;
+    m_posX = ((getParent()) ? getParent()->m_posX : 0) + posX;
+
+    for (const auto &child : m_children)
+    {
+        child->setPosX(posX);
+    }
 }
 
 void G3Node::setPosY(float posY)
 {
-    this->m_posY = posY;
+    m_posY = ((getParent()) ? getParent()->m_posY : 0) + posY;
+
+    for (const auto &child : m_children)
+    {
+        child->setPosY(posY);
+    }
 }
 
-// void G3Node::setScaleX(float scaleX)
-// {
-//     this->m_scaleX = scaleX;
-//     for (const auto& child : m_children)
-//     {
-//         child->m_scaleX = child->m_scaleX + this->m_scaleX;
-//     }
+void G3Node::setScaleX(float scaleX)
+{
+    m_scaleX = ((getParent()) ? getParent()->m_scaleX : 0) * scaleX;
 
-// }
+    for (const auto &child : m_children)
+    {
+        child->setScaleX(scaleX);
+    }
+}
 
-// void G3Node::setScaleY(float scaleX)
-// {
-//     this->m_scaleX = scaleX;
-//     for (const auto& child : m_children)
-//     {
-//         child->m_scaleX = child->m_scaleX + this->m_scaleX;
-//     }
+void G3Node::setScaleY(float scaleY)
+{
+    m_scaleY = ((getParent()) ? getParent()->m_scaleY : 0) * scaleY;
 
-// }
+    for (const auto &child : m_children)
+    {
+        child->setScaleY(scaleY);
+    }
+}
 
-// void G3Node::setRotDegree(float rotDegree)
-// {
-//     this->m_rotDegree = rotDegree;
-//     for (const auto& child : m_children)
-//     {
-//         child->m_rotDegree = child->m_rotDegree + this->m_rotDegree;
-//     }
+void G3Node::setRotDegree(float rotDegree)
+{
+    m_rotDegree = rotDegree;
+    for (const auto &child : m_children)
+    {
+        child->setRotDegree(rotDegree);
+    }
+}
 
-// }
+void G3Node::setWidth(float width)
+{
+    m_width = width;
+    for (const auto &child : m_children)
+    {
+        child->setWidth(width);
+    }
+}
 
-// void G3Node::setWidth(float width)
-// {
-//     this->m_width = width;
-//     for (const auto& child : m_children)
-//     {
-//         child->m_width = child->m_width + this->m_width;
-//     }
+void G3Node::setHeight(float height)
+{
+    m_height = height;
+    for (const auto &child : m_children)
+    {
+        child->setHeight(height);
+    }
+}
 
-// }
+void G3Node::flipH()
+{
+    m_scaleX = -m_scaleX;
+}
 
-// void G3Node::setHeight(float height)
-// {
-//     this->m_height = height;
-//     for (const auto& child : m_children)
-//     {
-//         child->m_height = child->m_height + this->m_height;
-//     }
-
-// }
+void G3Node::flipV()
+{
+    m_scaleY = -m_scaleY;
+}

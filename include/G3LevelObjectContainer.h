@@ -9,6 +9,7 @@ class G3LevelObjectContainer : public G3Node
 {
 public:
     G3LevelObjectContainer();
+    static std::shared_ptr<G3LevelObjectContainer> create();
     void sortChildren();
     /* X position getters*/
 
@@ -34,41 +35,18 @@ public:
     bool overlaps(G3Node *child);
     void draw() override; // draw bottom layers
     void drawTopLayers();
-
 private:
-    std::vector<std::shared_ptr<G3LevelObject>> m_b5{};
-    std::vector<std::shared_ptr<G3LevelObject>> m_b4{};
-    std::vector<std::shared_ptr<G3LevelObject>> m_b3{};
+    // std::vector<std::shared_ptr<G3LevelObject>> m_b5{};
+    // std::vector<std::shared_ptr<G3LevelObject>> m_b4{};
+    // std::vector<std::shared_ptr<G3LevelObject>> m_b3{};
     std::vector<std::shared_ptr<G3LevelObject>> m_b2{};
     std::vector<std::shared_ptr<G3LevelObject>> m_b1{};
-    std::vector<std::shared_ptr<G3Node>> m_playerLayer{};
+    std::vector<std::shared_ptr<G3LevelObject>> m_playerLayer{};
     std::vector<std::shared_ptr<G3LevelObject>> m_t1{};
-    std::vector<std::shared_ptr<G3LevelObject>> m_t2{};
-    std::vector<std::shared_ptr<G3LevelObject>> m_t3{};
-    std::vector<std::shared_ptr<G3LevelObject>> m_t4{};
-    template <typename T>
-    void drawLayer(const std::vector<T> &layer);
+    // std::vector<std::shared_ptr<G3LevelObject>> m_t2{};
+    // std::vector<std::shared_ptr<G3LevelObject>> m_t3{};
+    // std::vector<std::shared_ptr<G3LevelObject>> m_t4{};
 
-    template <typename T>
-    void sortLayer(std::vector<std::shared_ptr<T>> &layer);
+    void drawLayer(const std::vector<std::shared_ptr<G3LevelObject>> &layer);
+    void sortLayer(std::vector<std::shared_ptr<G3LevelObject>> &layer);
 };
-
-template <typename T>
-inline void G3LevelObjectContainer::drawLayer(const std::vector<T> &layer)
-{
-    for (const auto &child : layer)
-    {
-        if (overlaps(child.get()))
-            child->draw();
-    }
-}
-
-template <typename T>
-inline void G3LevelObjectContainer::sortLayer(std::vector<std::shared_ptr<T>> &layer)
-{
-    std::sort(layer.begin(), layer.end(),
-              [](const auto &a, const auto &b)
-              {
-                  return a->getZOrder() < b->getZOrder();
-              });
-}
